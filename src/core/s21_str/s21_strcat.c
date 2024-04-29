@@ -1,13 +1,11 @@
-#include "s21_string.h"
+#include "../../s21_string.h"
 
-char *strncat(char *dest, const char *src, s21_size_t n) {
-    char *d = dest;
-    while (*d != '\0') {
-        d++;
-    }
-    while (n-- != 0 && *src != '\0') {
-        *d++ = *src++;
-    }
-    *d = '\0';
-    return dest;
+char *s21_strcat(char *destptr, const char *srcptr) {
+  int destptrLength = s21_strlen(destptr);
+  int srcptrLength = s21_strlen(srcptr);
+
+  for (int x = 0; x <= srcptrLength; x += 1)
+    destptr[destptrLength + x] = srcptr[x];
+
+  return destptr;
 }

@@ -1,4 +1,4 @@
-#include "s21_string.h"
+#include "../../s21_string.h"
 
 char *strerror(int errnum) {
     static char error_messages[256][64] = {

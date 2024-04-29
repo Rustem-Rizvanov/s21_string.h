@@ -1,6 +1,6 @@
-#include "s21_string.h"
+#include "../../s21_string.h"
 
-size_t strcspn(const char *s, const char *reject) {
+s21_size_t strcspn(const char *s, const char *reject) {
     const char *p = s;
     while (*p != '\0') {
         const char *r = reject;

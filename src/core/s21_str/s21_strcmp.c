@@ -1,6 +1,10 @@
-#include "s21_string.h"
+#include "../../s21_string.h"
 
-int strcmp(char *str1, char *str2) {
-    for (;*str1 && *str1 == *str2; str1++, str2++);
-    return *str1 - *str2;
+int s21_strcmp(const char *str_1, const char *str_2) {
+  int result = 0;
+
+  for (int x = 0; result == 0 && str_1[x] != '\0' && str_2[x] != '\0'; x += 1)
+    if (str_1[x] != str_2[x]) result = str_1[x] - str_2[x];
+
+  return result == 0 ? 0 : (result > 0 ? 1 : (-1));
 }

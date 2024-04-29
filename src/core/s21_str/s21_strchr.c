@@ -1,4 +1,4 @@
-#include "s21_string.h"
+#include "../../s21_string.h"
 
 char *strchr(const char *s, int c) {
     while (*s != '\0') {
@@ -7,5 +7,5 @@ char *strchr(const char *s, int c) {
         }
         s++;
     }
-    return NULL;
+    return s21_NULL;
 }
