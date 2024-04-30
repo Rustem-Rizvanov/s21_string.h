@@ -1,11 +1,13 @@
 #include "../../s21_string.h"
 
-char *strchr(const char *s, int c) {
-    while (*s != '\0') {
-        if (*s == (char)c) {
-            return (char *)s;
-        }
-        s++;
+
+/* Ищет позицию первого вхождения символа в указанной строке. */
+
+
+char *strchr(const char *str, int symbol) {
+    while (*str != '\0') {
+        if (*str == symbol) return (char *) str;
+        str++;
     }
     return s21_NULL;
 }

@@ -1,6 +1,11 @@
 #include "../../s21_string.h"
 
 
+/* Разбивает строку str на части по указанному в delim разделителе. 
+Это может быть любой символ, который не будет печататься с остальными строками. */
+
+
+
 char *strtok(char *str, const char *delim) {
     static char *next_token = s21_NULL;
     if (str != s21_NULL) {

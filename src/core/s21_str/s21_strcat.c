@@ -1,11 +1,20 @@
 #include "../../s21_string.h"
 
-char *s21_strcat(char *destptr, const char *srcptr) {
-  int destptrLength = s21_strlen(destptr);
-  int srcptrLength = s21_strlen(srcptr);
+/* Объединяет указанные в буффере строки в одну,
+все строки будут записаны в первый указанный аргумент, её и надо выводить в sprintf. */
 
-  for (int x = 0; x <= srcptrLength; x += 1)
-    destptr[destptrLength + x] = srcptr[x];
 
-  return destptr;
+char *strcat(char *dest, const char *scr) {
+    s21_size_t i = 0, j = 0;
+    char *first = dest, *second = scr;
+    while (first[i] != '\0') {
+      i++;
+    }
+    while (second[j] != '\0') {
+      first[i] = second[j];
+      i++;
+      j++;
+  }
+  first[i] = '\0';
+  return first;
 }

@@ -1,103 +1,21 @@
 #include "../../s21_string.h"
 
-char *strerror(int errnum) {
-    static char error_messages[256][64] = {
-        "Success",
-        "Operation not permitted",
-        "No such file or directory",
-        "No such process",
-        "Interrupted system call",
-        "I/O error",
-        "No such device or address",
-        "Argument list too long",
-        "Exec format error",
-        "Bad file number",
-        "No child processes",
-        "Try again",
-        "Out of memory",
-        "Permission denied",
-        "Bad address",
-        "Block device required",
-        "Device or resource busy",
-        "File exists",
-        "Cross-device link",
-        "No such device",
-        "Not a directory",
-        "Is a directory",
-        "Invalid argument",
-        "File table overflow",
-        "Too many open files",
-        "Not a typewriter",
-        "Text file busy",
-        "File too large",
-        "No space left on device",
-        "Illegal seek",
-        "Read-only file system",
-        "Too many links",
-        "Broken pipe",
-        "Math argument out of domain of func",
-        "Math result not representable",
-        "Resource deadlock would occur",
-        "File name too long",
-        "No record locks available",
-        "Function not implemented",
-        "Directory not empty",
-        "Too many symbolic links encountered",
-        "Operation would block",
-        "No message of desired type",
-        "Identifier removed",
-        "Channel number out of range",
-        "Level 2 not synchronized",
-        "Level 3 halted",
-        "Level 3 reset",
-        "Link number out of range",
-        "Protocol driver not attached",
-        "No CSI structure available",
-        "Level 2 halted",
-        "Invalid exchange",
-        "Invalid request descriptor",
-        "Exchange full",
-        "No anode",
-        "Invalid request code",
-        "Invalid slot",
-        "Resource deadlock avoided",
-        "Bad message",
-        "No message available",
-        "Identifier removed",
-        "Resource temporarily unavailable",
-        "Operation now in progress",
-        "Operation already in progress",
-        "Socket operation on non-socket",
-        "Destination address required",
-        "Message too long",
-        "Protocol wrong type for socket",
-        "Protocol not available",
-        "Protocol not supported",
-        "Socket type not supported",
-        "Operation not supported on transport endpoint",
-        "Protocol family not supported",
-        "Address family not supported by protocol",
-        "Address already in use",
-        "Cannot assign requested address",
-        "Network is down",
-        "Network is unreachable",
-        "Network dropped connection because of reset",
-        "Software caused connection abort",
-        "Connection reset by peer",
-        "No buffer space available",
-        "Transport endpoint is already connected",
-        "Transport endpoint is not connected",
-        "Cannot send after transport endpoint shutdown",
-        "Too many references: cannot splice",
-        "Connection timed out",
-        "Connection refused",
-        "Host is down",
-        "No route to host"
-    };
 
-    if (errnum >= 0 && errnum < 256) {
-        return error_messages[errnum];
+/* Формирует отчёт об ошибке в определённой строке. */
+
+
+char *strerror(int errnum) {
+    static char error_message[101];
+    s21_memset(error_message, 0, 101);
+    if (errnum < 0 || errnum > MAX) {
+#ifndef __APPLE__
+            s21_sprintf(error_message, "Unknown error: %d", errnum);
+#elif defined __linux__ 
+            s21_sprintf(error_message, "No error information");
+#endif
     } else {
-        return "Unknown error";
+        static char *arr[] = error;
+        s21_memcpy(error_message, arr[errnum], s21_strlen(arr[errnum]));
     }
+    return error_message;
 }

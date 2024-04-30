@@ -1,6 +1,9 @@
 #include "../../s21_string.h"
 
 
+/* Ищет позицию последнего вхождения символа c в строке str. */
+
+
 char *strrchr(const char *s, int c) {
     const char *p = s;
     const char *last = s21_NULL;

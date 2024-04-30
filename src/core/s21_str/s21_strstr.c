@@ -2,6 +2,13 @@
 
 
 
+/* ищет первое вхождение строки, на которую указывает аргумент haystack, 
+в строку , на которую указывает аргумент needle. 
+Если строка haystack имеет нулевую длину, то функция вернет указатель на начало строки needle. */
+
+
+
+
 char *strstr(const char *haystack, const char *needle) {
     if (*needle == '\0') {
         return (char *)haystack;
