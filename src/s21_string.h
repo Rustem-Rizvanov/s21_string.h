@@ -9,14 +9,6 @@
 
 typedef long unsigned s21_size_t;
 
-
-
-typedef struct Holder {
-    int code;
-    struct Holder *next;
-} Holder;
-
-
 #if defined(__APPLE__)
     #define MAX 106
     #define error {"Undefined error: 0", \
@@ -264,5 +256,8 @@ typedef struct Holder {
 "Memory page has hardware error"}
 #endif  // (__unix__)
 
+#include "headers/s21_bonus.h"
+#include "headers/s21_sprintf.h"
+#include "headers/s21_sscanf.h"
 
 #endif // SRC_S21_STRING_H_
