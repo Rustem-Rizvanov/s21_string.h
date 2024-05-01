@@ -1,7 +1,7 @@
 #ifndef SRC_HEADERS_S21_SSCANF_H_
 #define SRC_HEADERS_S21_SSCANF_H_
 
-struct mods {
+struct mode {
   int len;
   int skip;
   int h;
@@ -10,16 +10,16 @@ struct mods {
 };
 
 
-// typedef struct {
-//   int format;
-//   long count;
-//   int end;
-//   int supr;
-//   int wid;
-//   int len;
-//   int err;
-//   char buff;
-// } ops;
+typedef struct option {
+  int format;
+  long count;
+  int end;
+  int wid;
+  int zvezd;
+  int len;
+  int err;
+  char buff;
+} option;
 
 typedef struct Holder {
     int code;
@@ -27,6 +27,6 @@ typedef struct Holder {
 } Holder;
 
 
-typedef struct mods mods;
+typedef struct mode mode;
 
 #endif  // SRC_HEADERS_S21_SSCANF_H_
