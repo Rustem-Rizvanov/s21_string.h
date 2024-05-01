@@ -6,7 +6,7 @@ MEM_DIR = $(wildcard .core/s21_mem/*.c)
 SPRINTF = $(wildcard ./core/s21_sprintf/*.c)
 SSCANF = $(wildcard ./core/s21_sscanf/*.c)
 STR = $(wildcard ./core/s21_str/*.c)
-
+HEADERS = s21_string.h
 OBJ_LIBRARY := $(patsubst %.c, %.o, $(MEM_DIR) $(SPRINTF) $(SSCANF) $(STR))
 
 ifeq ($(OS), Darwin)
@@ -23,14 +23,14 @@ my_program: $(OBJ_LIBRARY)
 $(OBJ_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-s21_string:
-	$(CC) $(FLAGC)
+s21_string: $(MEM_DIR) $(SPRINTF) $(SSCANF) $(STR) $(HEADERS) 
+	$(CC) $(FLAGC) $(MEM_DIR) $(SPRINTF) $(SSCANF) $(STR) -o $(OBJ_DIR)/
 
 s21_strgcov:
 	$(CC) $(FLAGC)
 
 s21_string.a: $(OBJ_LIBRARY) $(HEADERS)
-	ar rcs s21_string.a $(OBJ_LIBRARY)
+	ar rcs s21_string.a $(OBJ_LIBRARY) $(OBJ_DIR)
 	ranlib s21_string.a
 	rm -rf ./*/*.o
 

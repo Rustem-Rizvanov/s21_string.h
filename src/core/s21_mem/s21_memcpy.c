@@ -1,11 +1,11 @@
-#include "../s21_string.h"
+#include "../../s21_string.h"
 
 /* Копирует байты из src в dest, то есть между буферами.
 Размер буфера назначения (куда копируется) должен быть таким же или больше. */
 
 
 void *s21_memcpy(void *dest, const void *src, s21_size_t size) {
-  if (dest == NULL) return NULL;
+  if (dest == s21_NULL) return s21_NULL;
 
   char *char_dest = (char *) dest;
   char *char_src = (char *) src;

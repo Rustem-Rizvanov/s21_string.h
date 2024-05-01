@@ -6,7 +6,7 @@
 Выводится, на какой позиции находится первый найденный символ из множества. */
 
 
-char *strpbrk(const char *str, const char *accept) {
+char *s21_strpbrk(const char *str, const char *accept) {
     char *result = s21_NULL;
 
     while (*str && !result) {

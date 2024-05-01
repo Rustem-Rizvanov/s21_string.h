@@ -1,4 +1,4 @@
-#include "../s21_string.h"
+#include "../../s21_string.h"
 
 
 /* Копирует байты из src в dest, то есть между буферами.

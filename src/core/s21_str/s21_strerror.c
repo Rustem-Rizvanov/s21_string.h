@@ -4,7 +4,7 @@
 /* Формирует отчёт об ошибке в определённой строке. */
 
 
-char *strerror(int errnum) {
+char *s21_strerror(int errnum) {
     static char error_message[101];
     s21_memset(error_message, 0, 101);
     if (errnum < 0 || errnum > MAX) {

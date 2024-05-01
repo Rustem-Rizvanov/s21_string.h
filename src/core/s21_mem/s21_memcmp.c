@@ -1,7 +1,9 @@
-#include "../s21_string.h"
+#include "../../s21_string.h"
+
 
 /* Побайтно сравнивает два массива, на которые указывают аргументы.
 Сравнение продолжается, пока массив не закончится или пока не будет найдено различие. */
+
 
 int s21_memcmp(const void *mem_1, const void *mem_2, s21_size_t size) {
     unsigned char *str_1 = (unsigned char *)mem_1;

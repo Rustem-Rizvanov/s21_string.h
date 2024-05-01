@@ -21,12 +21,6 @@ typedef struct option {
   char buff;
 } option;
 
-typedef struct Holder {
-    int code;
-    struct Holder *next;
-} Holder;
-
-
 typedef struct mode mode;
 
 #endif  // SRC_HEADERS_S21_SSCANF_H_

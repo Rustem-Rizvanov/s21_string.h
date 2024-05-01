@@ -1,11 +1,14 @@
-#include "../s21_string.h"
+#include "../../s21_string.h"
 
 /* Заполняет первые size байт массива символом, указанным в symbol.*/
 
 
-void *s21_memset(void *str, int symbol, s21_size_t size) {
-  for (int x = 0; x < size; x += 1) {
-    ((char *)str)[x] = symbol;
-  }
-  return str;
+void *s21_memset(void *str, int c, s21_size_t size) {
+    unsigned char* p = (unsigned char*)str;
+    if (p) {
+        while (size--) {
+            *p++ = (unsigned char)c;
+        }
+    }
+    return str;
 }

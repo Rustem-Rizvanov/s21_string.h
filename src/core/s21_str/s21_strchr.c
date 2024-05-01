@@ -4,7 +4,7 @@
 /* Ищет позицию первого вхождения символа в указанной строке. */
 
 
-char *strchr(const char *str, int symbol) {
+char *s21_strchr(const char *str, int symbol) {
     while (*str != '\0') {
         if (*str == symbol) return (char *) str;
         str++;
