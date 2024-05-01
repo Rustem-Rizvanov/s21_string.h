@@ -1,7 +1,7 @@
 OS := $(shell uname -s)
 CC = gcc 
 
-OBJ_DIR = ./obj
+OBJ_DIR := .src/obj
 MEM_DIR = $(wildcard .core/s21_mem/*.c)
 SPRINTF = $(wildcard ./core/s21_sprintf/*.c)
 SSCANF = $(wildcard ./core/s21_sscanf/*.c)
@@ -20,17 +20,17 @@ all: $(OBJ_LIBRARY) test s21_string s21_strgcov
 my_program: $(OBJ_LIBRARY)
 	$(CC) $(CFLAGS) $(OBJ_LIBRARY) -o my_program
 
-$(OBJ_DIR)/%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ_DIR)/%.o: %.c 
+	$(CC) $(CFLAGS) (MEM_DIR) $(SPRINTF) $(SSCANF) $(STR) -c $< -o ./
 
-s21_string: $(MEM_DIR) $(SPRINTF) $(SSCANF) $(STR) $(HEADERS) 
-	$(CC) $(FLAGC) $(MEM_DIR) $(SPRINTF) $(SSCANF) $(STR) -o $(OBJ_DIR)/
+s21_string:
+	$(CC) $(FLAGC) $(MEM_DIR) $(SPRINTF) $(SSCANF) $(STR) -c ./
 
 s21_strgcov:
 	$(CC) $(FLAGC)
 
 s21_string.a: $(OBJ_LIBRARY) $(HEADERS)
-	ar rcs s21_string.a $(OBJ_LIBRARY) $(OBJ_DIR)
+	ar rcs s21_string.a $(OBJ_LIBRARY) 
 	ranlib s21_string.a
 	rm -rf ./*/*.o
 
@@ -61,5 +61,5 @@ check:
 rebuild: clean all
 
 clean:
-	rm -f *.o *.a *.gcno *.gcda *.info *.out *.gcov
+	rm -f ./core/s21_bonus/*.o ./core/s21_str/*o ./core/s21_sscanf/*o ./core/s21_sprintf/*.o *.o *.a *.gcno *.gcda *.info *.out *.gcov
 	rm -rf ./report

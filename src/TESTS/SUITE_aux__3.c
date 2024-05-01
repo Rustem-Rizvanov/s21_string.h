@@ -3,7 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../../../s21_string.h"
+#include "../s21_string.h"
 
 #define BUFF_SIZE BUFSIZ
 
