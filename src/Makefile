@@ -34,6 +34,10 @@ s21_string.a: $(OBJ_LIBRARY) $(HEADERS)
 	ranlib s21_string.a
 	rm -rf ./*/*.o
 
+test: s21_string.a TESTS/SUITE_main.c
+	gcc $(CFLAGS) TESTS/SUITE_main.c s21_string.a -o test.out -lm -lcheck
+	./test.out
+
 test_1: s21_string.a TESTS/SUITE_aux__1.c
 	gcc $(CFLAGS) TESTS/SUITE_aux__1.c s21_string.a -o test.out -lm -lcheck
 	./test_1.out
