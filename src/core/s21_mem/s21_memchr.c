@@ -6,14 +6,27 @@
 
 
 void *s21_memchr(const void *str, int symbol, s21_size_t size) {
-  const char *result = str;
-  int status = 0;
+//   const char *result = str;
+//   int status = 0;
 
-  for (int x = 0; status = 0 && result && x < size; x++) {
-    if (result[x] == symbol) {
-      if (symbol != '\0') result += x;
-      status = 1;
+//   for (int x = 0; status = 0 && result && x < size; x++) {
+//     if (result[x] == symbol) {
+//       if (symbol != '\0') result += x;
+//       status = 1;
+//     }
+// }
+// return status ? ((void *)result) : s21_NULL;
+// }
+
+    unsigned char *p = (unsigned char *) str;
+    unsigned char *isCharfind = s21_NULL;
+    while ((str != s21_NULL) && (size--)) {
+        if (*p != (unsigned char)symbol) {
+            p++;
+        } else {
+            isCharfind = p;
+            break;
+        }
     }
-    return status ? ((void *)result) : s21_NULL;
-}
+    return isCharfind;
 }

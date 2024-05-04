@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "s21_string.h"
+#include "../s21_string.h"
 
 START_TEST(S21_STRLEN) {
   ck_assert_msg(s21_strlen("") == strlen(""), "FAILURE! Tes \"\" failed!");
