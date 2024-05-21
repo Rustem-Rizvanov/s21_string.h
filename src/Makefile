@@ -1,65 +1,45 @@
-OS := $(shell uname -s)
-CC = gcc 
+CFLAGS = -c -Wall -Werror -Wextra -std=c11
+LDFLAGS = -Wall -Werror -Wextra -std=c11
+SOURCE = $(wildcard s21_*.c)
+OBJECTS = $(patsubst %.c,%.o, ${SOURCE})
+TESTS_SOURCE = tests/*.c
+UNAME_S := $(shell uname -s)
 
-OBJ_DIR := .src/obj
-MEM_DIR = $(wildcard .core/s21_mem/*.c)
-SPRINTF = $(wildcard ./core/s21_sprintf/*.c)
-SSCANF = $(wildcard ./core/s21_sscanf/*.c)
-STR = $(wildcard ./core/s21_str/*.c)
-HEADERS = s21_string.h
-OBJ_LIBRARY := $(patsubst %.c, %.o, $(MEM_DIR) $(SPRINTF) $(SSCANF) $(STR))
-
-ifeq ($(OS), Darwin)
-	@FLAGS := -Wall -Wextra -Werror -std=c11
-else
-	@FLAGS := -Wall -Wextra -Werror -std=c11 -D_GNU_SOURCE
+ifeq ($(UNAME_S),Linux)
+  	OPEN_CMD = xdg-open
+	ADD_LIB = -lcheck -lsubunit -lm -lrt -lpthread -D_GNU_SOURCE
+endif
+ifeq ($(UNAME_S),Darwin)
+	OPEN_CMD = open
+	ADD_LIB =
 endif
 
-all: $(OBJ_LIBRARY) test s21_string s21_strgcov
+all: s21_string.a
 
-my_program: $(OBJ_LIBRARY)
-	$(CC) $(CFLAGS) $(OBJ_LIBRARY) -o my_program
-
-$(OBJ_DIR)/%.o: %.c 
-	$(CC) $(CFLAGS) (MEM_DIR) $(SPRINTF) $(SSCANF) $(STR) -c $< -o ./
-
-s21_string:
-	$(CC) $(FLAGC) $(MEM_DIR) $(SPRINTF) $(SSCANF) $(STR) -c ./
-
-s21_strgcov:
-	$(CC) $(FLAGC)
-
-s21_string.a: $(OBJ_LIBRARY) $(HEADERS)
-	ar rcs s21_string.a $(OBJ_LIBRARY) 
+s21_string.a: ${SOURCE}
+	gcc $(CFLAGS) $(ADD_LIB) $(SOURCE)
+	ar rcs $@ $(OBJECTS)
 	ranlib s21_string.a
-	rm -rf ./*/*.o
+	-rm -rf *.o
 
-test_1: s21_string.a TESTS/SUITE_aux__1.c
-	gcc $(CFLAGS) TESTS/SUITE_aux__1.c s21_string.a -o test.out -lm -lcheck
-	./test_1.out
+test: s21_string.a
+	gcc $(LDFLAGS) -o test $(TESTS_SOURCE) s21_string.a $(ADD_LIB) -lcheck
+	./test
 
-test_2: s21_string.a TESTS/SUITE_aux__2.c
-	gcc $(CFLAGS) TESTS/SUITE_aux__2.c s21_string.a -o test.out -lm -lcheck
-	./test_2.out
+gcov_report:${SOURCE}
+	gcc --coverage ${SOURCE} ${TESTS_SOURCE} -o test $(ADD_LIB) -lcheck
+	./test
+	gcov ${SOURCE}
+	lcov -t "stest" -o s21_test.info -c -d .
+	genhtml -o report s21_test.info
 
-test_3: s21_string.a TESTS/SUITE_aux__3.c
-	gcc $(CFLAGS) TESTS/SUITE_aux__3.c s21_string.a -o test.out -lm -lcheck
-	./test_3.out
+valg:
+	valgrind --tool=memcheck --leak-check=yes --track-origins=yes --leak-check=full --show-leak-kinds=all -s ./test
 
-gcov_report: s21_string.a TESTS/SUITE_main.c
-	gcc $(GCOVFLAGS) TESTS/SUITE_main.c $(SOURCES) -o report.out -lm -lcheck
-	./report.out
-	gcov -f $(SOURCES)
-	lcov -t "gcov_report" -o Coverage_Report.info -c -d .
-	genhtml -o ./report Coverage_Report.info
-	rm -f *.gcno *.gcda *.info report.out *.gcov
-	open ./report/index-sort-f.html
-
-check:
-	clang-format -style=Google -n ./*/*.c
-
-rebuild: clean all
+leaks:
+	leaks -atExit -- ./test
 
 clean:
-	rm -f ./core/s21_bonus/*.o ./core/s21_str/*o ./core/s21_sscanf/*o ./core/s21_sprintf/*.o *.o *.a *.gcno *.gcda *.info *.out *.gcov
-	rm -rf ./report
+	-rm -rf *.o *.gcda *.gcno *.gcov *result coverage.info s21_test.info s21_string.a test report
+
+.PHONY: clean all s21_string.a test gcov_report

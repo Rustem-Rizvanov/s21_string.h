@@ -1,24 +1,89 @@
 #ifndef SRC_S21_STRING_H_
 #define SRC_S21_STRING_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h> // s21_strspn
-
 #include <ctype.h>
-#include <limits.h>
+#include <limits.h>  // Для определения краевых значений
 #include <locale.h>
 #include <math.h>
 #include <stdarg.h>
+#include <stdbool.h>  // s21_strspn
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <wchar.h>
 
+#include "s21_sscanf.h"  //Nealpadm bonus lib
+
 #define s21_NULL ((void *)0)
+typedef long unsigned int s21_size_t;
 
-typedef long unsigned s21_size_t;
+// Tarramad Sprintf function
+typedef struct variables {
+  int width;
+  int precision;
+  int format_adress;
+  int str_adress;
+  int length;
+  int zero_flag;
+  int plus_flag;
+  int is_negative;
+  int l_flag;
+  int h_flag;
+  int minus_flag;
+  int space_flag;
+  int point_flag;
+  int no_precision;
+  char flag;
+} variables;
 
+int s21_sprintf(char *str, const char *format, ...);
+int char_to_digit(char c);
+int end_of_parce(char c, int *space_count, variables *var);
+void percent_parser(const char *format, variables *var);
+void default_settings(char *string, variables *var);
+void float_to_ascii(double number, variables *var, char *float_point);
+void h_flag_parcer(const char *format, variables *var);
+void increase_format_adress(char const *format, variables *var);
+void l_flag_parcer(const char *format, variables *var);
+void l_h_flags_process(char *str, variables *var, long int number);
+void minus_flag_parcer(const char *format, variables *var);
+void number_to_str(char *string, long long unsigned int n, variables *var,
+                   int *i);
+void plus_flag_parcer(const char *format, variables *var);
+void point_parcer(const char *format, variables *var);
+void precision_parcer(const char *format, variables *var);
+void print_float_to_string(char *str, variables *var, double number);
+void print_int_to_str(char *str, variables *var, long int number);
+void print_unsigned_to_str(char *str, variables *var, long unsigned int number);
+void print_str_to_str(char *str, variables *var, char *string);
+void restore_variables(variables *var);
+void slash_parcer(char *str, char const *format, variables *var);
+void space_flag_parcer(const char *format, variables *var);
+void width_parcer(const char *format, variables *var);
+void width_setup(char *str, variables *var);
+void zero_flag_parcer(const char *format, variables *var);
+void ud_precision(char *integer, variables *var);
+void plus_minus_space(char *string, variables *var, int *i);
+void print_char_to_string(char *str, variables *var, char c);
+void round_float(char *float_point, int i);
+void print_empty(char *str, variables *var);
+void big_double(double number, char *float_point, int *i);
+void after_point_to_ascii(double after_point, variables *var, char *float_point,
+                          int *i);
+void place_point_in_place(char *float_point, int point_position, int *i,
+                          variables *var);
+char *create_a_demonic_bottom();
+
+// Armondvi functions
+void *s21_to_lower(const char *str);
+void *s21_to_upper(const char *str);
+void *s21_trim(const char *src, const char *trim_chars);
+void *s21_insert(const char *src, const char *str, size_t start_index);
+
+// Nealpadm functions
 typedef struct Holder {
-    int code;
-    struct Holder *next;
+  int code;
+  struct Holder *next;
 } Holder;
 
 void init(Holder **holderPointer);
@@ -28,254 +93,7 @@ int peek(Holder **holderPointer);
 int isAny(Holder *holderPointer, int value);
 void destroy(Holder **holderPointer);
 
-#if defined(__APPLE__)
-    #define MAX 106
-    #define error {"Undefined error: 0", \
-"Operation not permitted", \
-"No such file or directory", \
-"No such process", \
-"Interrupted system call", \
-"Input/output error", \
-"Device not configured", \
-"Argument list too long", \
-"Exec format error", \
-"Bad file descriptor", \
-"No child processes", \
-"Resource deadlock avoided", \
-"Cannot allocate memory", \
-"Permission denied", \
-"Bad address", \
-"Block device required", \
-"Resource busy", \
-"File exists", \
-"Cross-device link", \
-"Operation not supported by device", \
-"Not a directory", \
-"Is a directory", \
-"Invalid argument", \
-"Too many open files in system", \
-"Too many open files", \
-"Inappropriate ioctl for device", \
-"Text file busy", \
-"File too large", \
-"No space left on device", \
-"Illegal seek", \
-"Read-only file system", \
-"Too many links", \
-"Broken pipe", \
-"Numerical argument out of domain", \
-"Result too large", \
-"Resource temporarily unavailable", \
-"Operation now in progress", \
-"Operation already in progress", \
-"Socket operation on non-socket", \
-"Destination address required", \
-"Message too long", \
-"Protocol wrong type for socket", \
-"Protocol not available", \
-"Protocol not supported", \
-"Socket type not supported", \
-"Operation not supported", \
-"Protocol family not supported", \
-"Address family not supported by protocol family", \
-"Address already in use", \
-"Can't assign requested address", \
-"Network is down", \
-"Network is unreachable", \
-"Network dropped connection on reset", \
-"Software caused connection abort", \
-"Connection reset by peer", \
-"No buffer space available", \
-"Socket is already connected", \
-"Socket is not connected", \
-"Can't send after socket shutdown", \
-"Too many references: can't splice", \
-"Operation timed out", \
-"Connection refused", \
-"Too many levels of symbolic links", \
-"File name too long", \
-"Host is down", \
-"No route to host", \
-"Directory not empty", \
-"Too many processes", \
-"Too many users", \
-"Disc quota exceeded", \
-"Stale NFS file handle", \
-"Too many levels of remote in path", \
-"RPC struct is bad", \
-"RPC version wrong", \
-"RPC prog. not avail", \
-"Program version wrong", \
-"Bad procedure for program", \
-"No locks available", \
-"Function not implemented", \
-"Inappropriate file type or format", \
-"Authentication error", \
-"Need authenticator", \
-"Device power is off", \
-"Device error", \
-"Value too large to be stored in data type", \
-"Bad executable (or shared library)", \
-"Bad CPU type in executable", \
-"Shared library version mismatch", \
-"Malformed Mach-o file", \
-"Operation canceled", \
-"Identifier removed", \
-"No message of desired type", \
-"Illegal byte sequence", \
-"Attribute not found", \
-"Bad message", \
-"EMULTIHOP (Reserved)", \
-"No message available on STREAM", \
-"ENOLINK (Reserved)", \
-"No STREAM resources", \
-"Not a STREAM", \
-"Protocol error", \
-"STREAM ioctl timeout", \
-"Operation not supported on socket", \
-"Policy not found", \
-"State not recoverable", \
-"Previous owner died", \
-"Interface output queue is full"}
-#elif defined (__linux__)
-    #define MAX 133
-    #define error {"Success", \
-"Operation not permitted", \
-"No such file or directory", \
-"No such process", \
-"Interrupted system call", \
-"I/O error", \
-"No such device or address", \
-"Argument list too long", \
-"Exec format error", \
-"Bad file descriptor", \
-"No child process", \
-"Resource temporarily unavailable", \
-"Out of memory", \
-"Permission denied", \
-"Bad address", \
-"Block device required", \
-"Resource busy", \
-"File exists", \
-"Cross-device link", \
-"No such device", \
-"Not a directory", \
-"Is a directory", \
-"Invalid argument", \
-"Too many open files in system", \
-"No file descriptors available", \
-"Not a tty", \
-"Text file busy", \
-"File too large", \
-"No space left on device", \
-"Invalid seek", \
-"Read-only file system", \
-"Too many links", \
-"Broken pipe", \
-"Domain error", \
-"Result not representable", \
-"Resource deadlock would occur", \
-"Filename too long", \
-"No locks available", \
-"Function not implemented", \
-"Directory not empty", \
-"Symbolic link loop", \
-"No error information", \
-"No message of desired type", \
-"Identifier removed", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"Device not a stream", \
-"No data available", \
-"Device timeout", \
-"Out of streams resources", \
-"No error information", \
-"No error information", \
-"No error information", \
-"Link has been severed", \
-"No error information", \
-"No error information", \
-"No error information", \
-"Protocol error", \
-"Multihop attempted", \
-"No error information", \
-"Bad message", \
-"Value too large for data type", \
-"No error information", \
-"File descriptor in bad state", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"No error information", \
-"Illegal byte sequence", \
-"No error information", \
-"No error information", \
-"No error information", \
-"Not a socket", \
-"Destination address required", \
-"Message too large", \
-"Protocol wrong type for socket", \
-"Protocol not available", \
-"Protocol not supported", \
-"Socket type not supported", \
-"Not supported", \
-"Protocol family not supported", \
-"Address family not supported by protocol", \
-"Address in use", \
-"Address not available", \
-"Network is down", \
-"Network unreachable", \
-"Connection reset by network", \
-"Connection aborted", \
-"Connection reset by peer", \
-"No buffer space available", \
-"Socket is connected", \
-"Socket not connected", \
-"Cannot send after socket shutdown", \
-"Too many references: cannot splice", \
-"Connection timed out", \
-"Connection refused", \
-"Host is down", \
-"No route to host", \
-"Operation already in progress", \
-"Operation now in progress", \
-"Stale file handle", \
-"Structure needs cleaning", \
-"Not a XENIX named type file", \
-"No XENIX semaphores available", \
-"Is a named type file", \
-"Remote I/O error", \
-"Disk quota exceeded", \
-"No medium found", \
-"Wrong medium type", \
-"Operation canceled", \
-"Required key not available", \
-"Key has expired", \
-"Key has been revoked", \
-"Key was rejected by service", \
-"Owner died", \
-"State not recoverable", \
-"Operation not possible due to RF-kill", \
-"Memory page has hardware error"}
-#endif  // (__unix__)
-
-
+char *s21_strdup(const char *s);
 void *s21_memchr(const void *str, int c, s21_size_t n);
 int s21_memcmp(const void *str1, const void *str2, s21_size_t n);
 void *s21_memcpy(void *dest, const void *src, s21_size_t n);
@@ -296,36 +114,25 @@ char *s21_strrchr(const char *str, int c);
 s21_size_t s21_strspn(const char *str1, const char *str2);
 char *s21_strstr(const char *haystack, const char *needle);
 char *s21_strtok(char *str, const char *delim);
-
-void *s21_to_upper(const char *str);
-void *s21_to_lower(const char *str);
-void *s21_insert(const char *src, const char *str, s21_size_t start_index);
-void *s21_trim(const char *src, const char *trim_chars);
-
-
-
 int s21_sscanf(const char *str, const char *format, ...);
 long int s21_strtol(const char **str, Holder **holderPointer, int radix);
 long double s21_strtold(const char **str, Holder **holderPointer);
-int getArg(const char **str, va_list *argp, int type, int mod, Holder **holderPointer, char *strMem);
-
+int getArg(const char **str, va_list *argp, int type, int mod,
+           Holder **holderPointer, char *strMem);
 int getCharacter(const char **str, va_list *argp, Holder **holderPointer);
 int getString(const char **str, va_list *argp, Holder **holderPointer);
-int getInteger(const char **str, va_list *argp, Holder **holderPointer, int mod, int radix);
+int getInteger(const char **str, va_list *argp, Holder **holderPointer, int mod,
+               int radix);
 int getDouble(const char **str, va_list *argp, Holder **holderPointer, int mod);
 int getPointer(const char **str, va_list *argp, Holder **holderPointer);
-int getNothing(const char **str, va_list *argp, Holder **holderPointer, const char *strMem);
+int getNothing(const char **str, va_list *argp, Holder **holderPointer,
+               const char *strMem);
 int getPercent(const char **str, Holder **holderPointer);
-
 int getWidth(Holder **holderPointer);
 char *getFirstDigit(const char *str);
 int getAsterisk(Holder **holderPointer);
-
 int s21_atoi(char **str);
 int specifierReader(char **pfl, int *mod);
 int formatLineReader(char **pfl);
-#include "headers/s21_bonus.h"
-#include "headers/s21_sprintf.h"
-#include "headers/s21_sscanf.h"
 
-#endif // SRC_S21_STRING_H_
+#endif  // SRC_S21_STRING_H_
